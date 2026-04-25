@@ -1,0 +1,12 @@
+SET @rowindex := -1;
+
+SELECT ROUND(AVG(LAT_N), 4)
+FROM (
+    SELECT LAT_N, @rowindex := @rowindex + 1 AS rowindex
+    FROM STATION
+    ORDER BY LAT_N
+) AS temp
+WHERE rowindex IN (
+    FLOOR(@rowindex / 2), 
+    CEIL(@rowindex / 2)
+);
