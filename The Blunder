@@ -1,0 +1,13 @@
+WITH SalariesWithoutZeros AS (
+    SELECT 
+        CAST(REPLACE(CAST(Salary AS CHAR), '0', '') AS UNSIGNED) AS SalaryNoZeros
+    FROM EMPLOYEES
+),
+ActualAverage AS (
+    SELECT AVG(Salary) AS AvgSalary FROM EMPLOYEES
+),
+MiscalculatedAverage AS (
+    SELECT AVG(SalaryNoZeros) AS AvgSalaryNoZeros FROM SalariesWithoutZeros
+)
+SELECT CEIL(ActualAverage.AvgSalary - MiscalculatedAverage.AvgSalaryNoZeros) AS Error
+FROM ActualAverage, MiscalculatedAverage;
